@@ -1,4 +1,5 @@
-﻿public class User
+﻿namespace UserClass;
+public class User
 {
     private static int _idCounter = 0;
     public int Id { get; private set; }

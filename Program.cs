@@ -1,80 +1,89 @@
-﻿static void Main(string[] args)
+﻿namespace UserClass
 {
-
-    User[] users = new User[3];
-    for (int i = 0; i < users.Length; i++)
+    internal class Program
     {
-        Console.WriteLine($"Enter details for user {i + 1}:");
-
-        Console.Write("Fullname: ");
-        string fullname = Console.ReadLine();
-
-        Console.Write("Email: ");
-        string email = Console.ReadLine();
-
-        string password;
-        while (true)
+        static void Main(string[] args)
         {
-            Console.Write("Password: ");
-            password = Console.ReadLine();
 
-            if (new User("", "", "").PasswordChecker(password))
+            User[] users = new User[3];
+            for (int i = 0; i < users.Length; i++)
             {
-                users[i] = new User(fullname, email, password);
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Password does not meet the required criteria. Please try again.");
-            }
-        }
-    }
+                Console.WriteLine($"Enter details for user {i + 1}:");
 
-    while (true)
-    {
-        Console.WriteLine("\nMenu:");
-        Console.WriteLine("1. Show all students");
-        Console.WriteLine("2. Get info by id");
-        Console.WriteLine("0. Quit");
-        Console.Write("Select an option: ");
+                Console.Write("Fullname: ");
+                string fullname = Console.ReadLine();
 
-        string choice = Console.ReadLine();
+                Console.Write("Email: ");
+                string email = Console.ReadLine();
 
-        switch (choice)
-        {
-            case "1":
-                foreach (var user in users)
+                string password;
+                while (true)
                 {
-                    user.GetInfo();
-                }
-                break;
+                    Console.Write("Password: ");
+                    password = Console.ReadLine();
 
-            case "2":
-                Console.Write("Enter user id: ");
-                if (int.TryParse(Console.ReadLine(), out int id))
-                {
-                    User user = User.FindUserById(users, id);
-                    if (user != null)
+                    if (new User("", "", "").PasswordChecker(password))
                     {
-                        user.GetInfo();
+                        users[i] = new User(fullname, email, password);
+                        break;
                     }
                     else
                     {
-                        Console.WriteLine("User not found.");
+                        Console.WriteLine("Password does not meet the required criteria. Please try again.");
                     }
                 }
-                else
+            }
+
+            while (true)
+            {
+                Console.WriteLine("\nMenu:");
+                Console.WriteLine("1. Show all students");
+                Console.WriteLine("2. Get info by id");
+                Console.WriteLine("0. Quit");
+                Console.Write("Select an option: ");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
                 {
-                    Console.WriteLine("Invalid id format.");
+                    case "1":
+                        foreach (var user in users)
+                        {
+                            user.GetInfo();
+                        }
+                        break;
+
+                    case "2":
+                        Console.Write("Enter user id: ");
+                        if (int.TryParse(Console.ReadLine(), out int id))
+                        {
+                            User user = User.FindUserById(users, id);
+                            if (user != null)
+                            {
+                                user.GetInfo();
+                            }
+                            else
+                            {
+                                Console.WriteLine("User not found.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid id format.");
+                        }
+                        break;
+
+                    case "0":
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
                 }
-                break;
-
-            case "0":
-                return;
-
-            default:
-                Console.WriteLine("Invalid option. Please try again.");
-                break;
+            }
         }
     }
+
+
+    
 }
