@@ -4,86 +4,58 @@
     {
         static void Main(string[] args)
         {
-
             User[] users = new User[3];
-            for (int i = 0; i < users.Length; i++)
+            int userCount = 0;
+            while (userCount < users.Length)
             {
-                Console.WriteLine($"Enter details for user {i + 1}:");
-
-                Console.Write("Fullname: ");
-                string fullname = Console.ReadLine();
-
-                Console.Write("Email: ");
+                Console.WriteLine("Zehmet olmasa email daxil edin:");
                 string email = Console.ReadLine();
+                Console.WriteLine("Zehmet olmasa şifrəni daxil edin:");
+                string password = Console.ReadLine();
+                Console.WriteLine("Zehmet olmasa AdSoyad daxil edin:");
+                string fullName = Console.ReadLine();
 
-                string password;
-                while (true)
-                {
-                    Console.Write("Password: ");
-                    password = Console.ReadLine();
-
-                    if (new User("", "", "").PasswordChecker(password))
-                    {
-                        users[i] = new User(fullname, email, password);
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Password does not meet the required criteria. Please try again.");
-                    }
-                }
+                users[userCount] = new User(email, password, fullName);
+                userCount++;
+                Console.WriteLine("Istifadeci elave olundu");
             }
-
             while (true)
             {
-                Console.WriteLine("\nMenu:");
-                Console.WriteLine("1. Show all students");
-                Console.WriteLine("2. Get info by id");
-                Console.WriteLine("0. Quit");
-                Console.Write("Select an option: ");
+                Console.WriteLine
+                    ("1.Show all users \n" +
+                     "2.Get info by id\n" +
+                     "0.Quit");
 
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                int command = Convert.ToInt32(Console.ReadLine());
+                switch (command)
                 {
-                    case "1":
-                        foreach (var user in users)
+                    case 0:
+                        return;
+                    case 1:
+                        Console.WriteLine("All users:");
+                        for (int i = 0; i < userCount; i++)
                         {
-                            user.GetInfo();
+                            users[i].GetInfo();
                         }
                         break;
-
-                    case "2":
-                        Console.Write("Enter user id: ");
-                        if (int.TryParse(Console.ReadLine(), out int id))
+                    case 2:
+                        Console.WriteLine("Id daxil edin");
+                        int id = Convert.ToInt32(Console.ReadLine());
+                        int index = User.FindByID(users, id);
+                        if (index != -1)
                         {
-                            User user = User.FindUserById(users, id);
-                            if (user != null)
-                            {
-                                user.GetInfo();
-                            }
-                            else
-                            {
-                                Console.WriteLine("User not found.");
-                            }
+                            users[index].GetInfo();
                         }
                         else
                         {
-                            Console.WriteLine("Invalid id format.");
+                            Console.WriteLine("Bele istifadeci movcud deyil");
                         }
                         break;
-
-                    case "0":
-                        return;
-
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Console.WriteLine("Zehmet olmasa duzgun komanda daxil edin");
                         break;
                 }
             }
         }
     }
-
-
-    
 }

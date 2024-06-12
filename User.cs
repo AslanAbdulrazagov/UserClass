@@ -1,49 +1,77 @@
 ﻿namespace UserClass;
-public class User
+
+internal class User
 {
-    private static int _idCounter = 0;
-    public int Id { get; private set; }
+    private static int id;
+    private string _password;
+    public int Id { get; }
     public string Fullname { get; set; }
     public string Email { get; set; }
-    private string _password;
-
     public string Password
     {
-        get { return _password; }
+        get => _password;
         set
         {
-            if (PasswordChecker(value))
+            while (!PasswordChecker(value))
             {
-                _password = value;
+                Console.WriteLine("Sifreni duzgun daxil edin:");
+                value = Console.ReadLine();
             }
-
+            _password = value;
         }
     }
-
-    public User(string fullname, string email, string password)
+    public User(string email, string password, string fullname)
     {
-        Id = ++_idCounter;
-        Fullname = fullname;
+        id++;
+        Id = id;
         Email = email;
         Password = password;
+        Fullname = fullname;
+
     }
 
     public bool PasswordChecker(string password)
     {
-        if (password.Length < 8) return false;
-        if (!password.Any(char.IsUpper)) return false;
-        if (!password.Any(char.IsLower)) return false;
-        if (!password.Any(char.IsDigit)) return false;
-        return true;
+        bool Upper = false;
+        bool Lower = false;
+        bool Digit = false;
+        if (password.Length >= 8)
+        {
+            foreach (var item in password)
+            {
+                if (char.IsUpper(item))
+                {
+                    Upper = true;
+                }
+                else if (char.IsLower(item))
+                {
+                    Lower = true;
+                }
+                else if (char.IsDigit(item))
+                {
+                    Digit = true;
+                }
+                if (Upper && Lower && Digit)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
     public void GetInfo()
     {
-        Console.WriteLine($"ID: {Id}, Fullname: {Fullname}, Email: {Email}");
+        Console.WriteLine($"Id:{Id} - Fullname:{Fullname} - Email {Email}");
     }
-
-    public static User FindUserById(User[] users, int id)
+    public static int FindByID(User[] users, int id)
     {
-        return users.FirstOrDefault(user => user.Id == id);
+        for (int i = 0; i < users.Length; i++)
+        {
+            if (users[i].Id == id)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
